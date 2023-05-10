@@ -1,0 +1,49 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.0.3'
+	id 'io.spring.dependency-management' version '1.1.0'
+	id 'com.google.cloud.tools.jib' version '3.3.1'
+}
+
+group = 'wonderland'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '19'
+
+jib {
+	from {
+		image = 'openjdk:19'
+	}
+	to {
+		image = 'drip-and-chip-api-jib'
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven { url "https://jitpack.io" }
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.0.3'
+	implementation 'org.postgresql:postgresql:42.5.4'
+	implementation 'org.springframework.boot:spring-boot-starter-validation:3.0.4'
+	implementation 'org.apache.commons:commons-lang3:3.12.0'
+}
+
+bootBuildImage {
+	imageName = 'jiln3hb/planet-api'
+	publish = true
+	docker {
+		publishRegistry {
+			username = 'jiln3hb'
+			password = 'agadfgaeryhaeDSF'
+		}
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
